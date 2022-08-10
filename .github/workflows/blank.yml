@@ -1,0 +1,25 @@
+nome : Windows 10 CRD Avi
+
+em :
+  workflow_dispatch :
+   entradas :
+      crdauthcode :
+        description : ' Insira o código do ChromeRemoteDesktop Headless '
+        obrigatório : verdadeiro
+      código PIN :
+        descrição : ' Pin de seis dígitos '
+        obrigatório : verdadeiro
+
+empregos :
+  construir :
+    nome : Compilação do Windows 10
+    run-on : windows-latest
+    
+    passos :
+    - usa : actions/checkout@v2
+    - name : Configurando a Área de Trabalho Remota do Chrome
+      execute : ./win10-chrome-remote/setup.ps1
+    - name : Conectando-se à Área de Trabalho Remota do Chrome
+      run : ${{ github.event.inputs.crdauthcode }} -pin=${{ github.event.inputs.pincode }}
+    - name : Repetindo o processo
+      execute : ./win10-chrome-remote/loop.ps1
