@@ -1,0 +1,29 @@
+# This is a basic workflow to help you get started with Actions
+
+nome : Windows-CRD
+
+em :
+  workflow_dispatch :
+    entradas :
+      código de autenticação :
+        descrição : ' Digite o código CRD '
+        obrigatório : verdadeiro
+      código PIN :
+        descrição : ' Pin de seis dígitos '
+        obrigatório : verdadeiro
+  
+empregos :
+  construir :
+    run-on : windows-latest
+
+    passos :
+    - usa : actions/checkout@v2
+    - name : Inicializando a Configuração
+      execute : ./setup.ps1
+    - nome : Iniciando CRD
+      execute : ${{ github.event.inputs.authcode }} -pin=${{ github.event.inputs.pincode }}
+    - nome : Manter Vivo
+      execute : ./timeout.ps1
+
+
+
